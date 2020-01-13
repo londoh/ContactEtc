@@ -2,7 +2,12 @@
 
 namespace WebDevEtc\ContactEtc\FieldGenerator;
 
+use WebDevEtc\ContactEtc\ContactForm;
 
+/**
+ * Interface FieldGeneratorInterface
+ * @package WebDevEtc\ContactEtc\FieldGenerator
+ */
 interface FieldGeneratorInterface
 {
     /**
@@ -10,8 +15,6 @@ interface FieldGeneratorInterface
      *
      * @param $contactFieldId
      * @return ContactForm
-     * @throws \Exception
      */
-    public function contactFormNamed($contactFieldId);
-
+    public function contactFormNamed(string $contactFieldId);
 }

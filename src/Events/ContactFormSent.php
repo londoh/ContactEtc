@@ -7,6 +7,10 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use WebDevEtc\ContactEtc\ContactForm;
 
+/**
+ * Class ContactFormSent
+ * @package WebDevEtc\ContactEtc\Events
+ */
 class ContactFormSent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -17,10 +21,14 @@ class ContactFormSent
     /** @var ContactForm */
     public $contact_form;
 
+    /**
+     * ContactFormSent constructor.
+     * @param array $submitted_data
+     * @param ContactForm $contact_form
+     */
     public function __construct(array $submitted_data, ContactForm $contact_form)
     {
         $this->submitted_data = $submitted_data;
         $this->contact_form = $contact_form;
     }
-
 }

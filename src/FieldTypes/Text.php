@@ -6,17 +6,17 @@
  */
 class Text extends BaseFieldType
 {
-
     /**
      * If true, this is a source for the 'reply to' name
      * @var bool
      */
-    protected $is_reply_to_name=false;
+    protected $is_reply_to_name = false;
+
     /**
      * If true, this is a source for the 'from' name
      * @var bool
      */
-    protected $is_from_name=false;
+    protected $is_from_name = false;
 
     /**
      * What blade view file should this field use on the contact form?
@@ -25,9 +25,8 @@ class Text extends BaseFieldType
      */
     public function getView()
     {
-        return "contactetc::fields.Text";
+        return 'contactetc::fields.Text';
     }
-
 
     /**
      * Return an array of rules for the validation.
@@ -36,10 +35,7 @@ class Text extends BaseFieldType
      */
     public function rules()
     {
-
-        return parent::parse_rules([
-            'string',
-        ]);
+        return $this->parse_rules(['string',]);
     }
 
     /**
@@ -48,7 +44,6 @@ class Text extends BaseFieldType
      */
     public function setAsReplyToName()
     {
-
         $this->is_reply_to_name = true;
         return $this;
     }
@@ -81,5 +76,4 @@ class Text extends BaseFieldType
     {
         return $this->is_from_name;
     }
-
 }

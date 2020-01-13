@@ -1,17 +1,15 @@
 <?php
 
-
 use Illuminate\Contracts\Mail\Mailer;
-use WebDevEtc\ContactEtc\ContactFormConfigurator;
+use Tests\TestCase;
 use WebDevEtc\ContactEtc\ContactEtcServiceProvider;
 use WebDevEtc\ContactEtc\ContactForm;
+use WebDevEtc\ContactEtc\ContactFormConfigurator;
 use WebDevEtc\ContactEtc\FieldTypes\Email;
 use WebDevEtc\ContactEtc\Handlers\HandleContactSubmission;
 
-class HandleContactSubmissionTest extends \Tests\TestCase
+class HandleContactSubmissionTest extends TestCase
 {
-
-
     public function setUp()
     {
         parent::setUp();
@@ -19,14 +17,13 @@ class HandleContactSubmissionTest extends \Tests\TestCase
             // send a custom array of what config files we want to (by default) include
             // this stops errors being thrown that are not relevant to any testing
             return ContactFormConfigurator::createNew([
-                __DIR__."/TestConfigs/main_contact_form_config.php"
+                __DIR__ . "/TestConfigs/main_contact_form_config.php",
             ]);
         });
     }
 
     public function test_basic_submission()
     {
-
 
         /** @var ContactFormConfigurator $config */
         $config = app()->make(ContactFormConfigurator::class);
@@ -46,20 +43,18 @@ class HandleContactSubmissionTest extends \Tests\TestCase
             'test_text' => str_random(),
             'test_email' => str_random() . "@example.com",
         ];
-        $mail = app()->make(   Mailer::class);
+        $mail = app()->make(Mailer::class);
         $handler = new HandleContactSubmission();
         $resp = $handler->handleContactSubmission(
             $mail,
             $input,
-            $config->getContactForm(ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY) ,
+            $config->getContactForm(ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY),
             true);
 
         $this->assertTrue($resp);
         $this->assertTrue(is_array($handler->getErrors()));
         $this->assertTrue(count($handler->getErrors()) == 0);
-
     }
-
 
 }
 

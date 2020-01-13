@@ -31,7 +31,6 @@ class HandleContactSubmission implements HandlerInterface
      */
     public function handleContactSubmission(Mailer $mail, array $submitted_data, ContactForm $contact_form, $clear_errors = true)
     {
-
         $this->clearErrors($clear_errors);
 
         // we don't actually use the errors array in this implementation.

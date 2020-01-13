@@ -6,11 +6,11 @@
  */
 class Email extends BaseFieldType
 {
-
     /**
      * @var bool
      */
     protected $is_default_from_address = false;
+
     /**
      * @var bool
      */
@@ -23,9 +23,8 @@ class Email extends BaseFieldType
      */
     public function getView()
     {
-        return "contactetc::fields.Email";
+        return 'contactetc::fields.Email';
     }
-
 
     /**
      * Return an array of rules for the validation.
@@ -34,9 +33,7 @@ class Email extends BaseFieldType
      */
     public function rules()
     {
-        return parent::parse_rules([
-            'email',
-        ]);
+        return $this->parse_rules(['email',]);
     }
 
     /**
@@ -76,6 +73,4 @@ class Email extends BaseFieldType
     {
         return $this->is_default_from_address;
     }
-
-
 }

@@ -1,16 +1,15 @@
 <?php
 
-use WebDevEtc\ContactEtc\ContactFormConfigurator;
-use WebDevEtc\ContactEtc\ContactEtcServiceProvider;
+use Tests\TestCase;
 use WebDevEtc\ContactEtc\ContactForm;
-use WebDevEtc\ContactEtc\FieldGenerator\GetContactFormFieldData;
+use WebDevEtc\ContactEtc\ContactFormConfigurator;
 use WebDevEtc\ContactEtc\FieldTypes\Email;
-use WebDevEtc\ContactEtc\FieldTypes\Textarea;
+use WebDevEtc\ContactEtc\FieldTypes\RecaptchaV2Invisible;
 use WebDevEtc\ContactEtc\FieldTypes\Text;
+use WebDevEtc\ContactEtc\FieldTypes\Textarea;
 
-class ContactFormTest extends \Tests\TestCase
+class ContactFormTest extends TestCase
 {
-
 
     public function setUp()
     {
@@ -19,22 +18,22 @@ class ContactFormTest extends \Tests\TestCase
             // send a custom array of what config files we want to (by default) include
             // this stops errors being thrown that are not relevant to any testing
             return ContactFormConfigurator::createNew([
-                __DIR__ . "/TestConfigs/main_contact_form_config.php"
+                __DIR__ . "/TestConfigs/main_contact_form_config.php",
             ]);
         });
     }
-
 
     public function test_can_create_a_contact_form()
     {
 
         $fields = [
             // first field:
-            \WebDevEtc\ContactEtc\FieldTypes\Text::newNamed("your_name")// field name (<input name=$field_name>)
+            Text::newNamed("your_name")// field name (<input name=$field_name>)
             ->setLabelName("Your alt name")// the <label>$label_name</label> value
             ->markAsRequiredField()// required in the Request validation + <input required >
 //                        ->setAsFromName() // if you want the email to set the 'from name' to this value
-            ->setAsReplyToName(), // if you want to email 'reply to name' to this value
+            ->setAsReplyToName(),
+            // if you want to email 'reply to name' to this value
 
             // second field:
             Email::newNamed("email")// the field name <input name='email'>
@@ -44,14 +43,15 @@ class ContactFormTest extends \Tests\TestCase
             ->max(200)// max length (via request validation rule)
             ->min(4)// min length (via request validation rule)
 //                        ->setAsFromAddress() // send the email to you with this as the 'from' address
-            ->setAsReplyToAddress(), // mark the email's "reply to" as this value
-
+            ->setAsReplyToAddress(),
+            // mark the email's "reply to" as this value
 
             // another field -
             Text::newNamed("your_location")// field name
             ->setLabelName("Location")
                 ->markAsOptional()// opposite of ->markAsRequiredField(). This isn't really needed, as all fields are optional unless ->markAsRequired() was set
-                ->max(100), // max length
+                ->max(100),
+            // max length
 
             // another field:
             Textarea::newNamed("message")
@@ -68,12 +68,12 @@ class ContactFormTest extends \Tests\TestCase
 //                    \WebDevEtc\ContactEtc\FieldTypes\Checkbox::newNamed("agree_to_terms") //<input type='checkbox'>
 //                            ->markAsRequiredField()->setLabelName("Agree to terms?"),
 
-
             // Do you want to use the invisible recaptcha from Google?
             // If so, please make sure that you have CAPTCHA_SITEKEY and CAPTCHA_SECRET set up in your .env (or in config/captcha.php)
             // and uncomment the next line
-            \WebDevEtc\ContactEtc\FieldTypes\RecaptchaV2Invisible::spam()// do not change the field name!
-            ->setLabelName("Spam protection"), // probably not needed, as it should be invisible!
+            RecaptchaV2Invisible::spam()// do not change the field name!
+            ->setLabelName("Spam protection"),
+            // probably not needed, as it should be invisible!
 
         ];
 
@@ -100,7 +100,6 @@ class ContactFormTest extends \Tests\TestCase
             ->setHtmlAboveAndBelowForm($above, $below)
             ->setSubmitButtonTextAndClasses($sendbutton, $sendcss);
 
-
         $this->assertTrue($contact_form->contact_form_name == $name);
         $this->assertTrue($contact_form->send_to == $sendto);
         $this->assertTrue($contact_form->human_readable_form_name == $readableFormName);
@@ -108,10 +107,7 @@ class ContactFormTest extends \Tests\TestCase
         $this->assertTrue($contact_form->html_below_form == $below);
         $this->assertTrue($contact_form->submit_button_text == $sendbutton);
         $this->assertTrue($contact_form->submit_button_css_classes == $sendcss);
-
-
     }
-
 
     public function test_contact_form_validates_with_error_for_incorrect_form()
     {
@@ -119,35 +115,33 @@ class ContactFormTest extends \Tests\TestCase
 
         $contact_form = ContactForm::newContactForm($name);
 
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $contact_form->validate();
     }
 
     public function test_contact_form_thows_error_if_form_name_not_valid_with_spaces()
     {
         $name = "with spaces";
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         ContactForm::newContactForm($name);
     }
 
     public function test_contact_form_thows_error_if_form_name_not_valid_with_dashes()
     {
         $name = "with-dashes";
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         ContactForm::newContactForm($name);
     }
 
     public function test_contact_form_validates_ok_for_correct_form()
     {
-
         $fields = [
             // first field:
-            \WebDevEtc\ContactEtc\FieldTypes\Text::newNamed("your_name")// field name (<input name=$field_name>)
+            Text::newNamed("your_name")// field name (<input name=$field_name>)
             ->setLabelName("Your alt name")// the <label>$label_name</label> value
             ->markAsRequiredField()// required in the Request validation + <input required >
 //                        ->setAsFromName() // if you want the email to set the 'from name' to this value
             ->setAsReplyToName(), // if you want to email 'reply to name' to this value
-
 
         ];
 
@@ -173,11 +167,6 @@ class ContactFormTest extends \Tests\TestCase
             ->setHtmlAboveAndBelowForm($above, $below)
             ->setSubmitButtonTextAndClasses($sendbutton, $sendcss);
 
-
         $this->assertTrue(is_object($contact_form->validate()));
-
-
     }
-
-
 }

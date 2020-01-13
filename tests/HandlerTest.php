@@ -1,18 +1,12 @@
 <?php
 
+use Tests\TestCase;
 use WebDevEtc\ContactEtc\ContactFormConfigurator;
-use WebDevEtc\ContactEtc\ContactEtcServiceProvider;
-use WebDevEtc\ContactEtc\ContactForm;
 use WebDevEtc\ContactEtc\FieldGenerator\GetContactFormFieldData;
-use WebDevEtc\ContactEtc\FieldTypes\Email;
-use WebDevEtc\ContactEtc\FieldTypes\Textarea;
-//use Mailer;
+use WebDevEtc\ContactEtc\Handlers\HandleContactSubmission;
 
-class HandlerTest extends \Tests\TestCase
+class HandlerTest extends TestCase
 {
-
-
-
     public function setUp()
     {
         parent::setUp();
@@ -21,30 +15,27 @@ class HandlerTest extends \Tests\TestCase
             // this stops errors being thrown that are not relevant to any testing
             return ContactFormConfigurator::createNew([
                 __DIR__ . "/TestConfigs/main_contact_form_config.php",
-                __DIR__ . "/TestConfigs/alt.php"
+                __DIR__ . "/TestConfigs/alt.php",
             ]);
         });
     }
 
     public function test_handler()
     {
-
-
         $field_generator = new GetContactFormFieldData();
         $form = $field_generator->contactFormNamed('alt');
         $submitted = [
-            'your_name' =>"myname",
-            "email"=>"tescit@example.com",
-            "message"=>"Hello world message here",
-            ];
+            'your_name' => "myname",
+            "email" => "tescit@example.com",
+            "message" => "Hello world message here",
+        ];
 
-        $mailer = app()->make( 'mailer' );
-        $handler = new \WebDevEtc\ContactEtc\Handlers\HandleContactSubmission();
+        $mailer = app()->make('mailer');
+        $handler = new HandleContactSubmission();
 
         $handler->handleContactSubmission($mailer, $submitted, $form);
 
-        $this->assertTrue(count($handler->getErrors()) == 0) ;
-
+        $this->assertTrue(count($handler->getErrors()) == 0);
     }
 
 }

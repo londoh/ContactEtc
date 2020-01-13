@@ -4,6 +4,10 @@ namespace WebDevEtc\ContactEtc\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
+/**
+ * Class MakeContactEtcForm
+ * @package WebDevEtc\ContactEtc\Commands
+ */
 class MakeContactEtcForm extends GeneratorCommand
 {
     /**
@@ -23,23 +27,26 @@ class MakeContactEtcForm extends GeneratorCommand
     /**
      * The type of class being generated.
      *
-     * @var string
      * @return null|mixed
+     * @var string
      */
     protected $type = 'ContactEtcForm';
 
     public function handle()
     {
-        if (!is_array(config("contactetc"))){
-            $this->error("ERROR: The config file contactetc.php does not exist, or is not returning an array. Have you done the vendor:publish command? Please see the docs on https://webdevetc.com/contactetc");
+        if (!is_array(config('contactetc'))) {
+            $this->error('ERROR: The config file contactetc.php does not exist, or is not returning an array.' .
+                ' Have you done the vendor:publish command? Please see the docs on https://webdevetc.com/contactetc');
             return;
         }
 
-        // create the file:
-        $return= parent::handle();
+        // create the file, using Laravel GeneratorCommand handle method. Returns null on success.
+        $response = parent::handle();
+
         // output info messages:
-        $this->outputMessages($return);
-        return $return;
+        $this->outputMessages($response);
+
+        return $response;
     }
 
     /**
@@ -55,15 +62,17 @@ class MakeContactEtcForm extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\ContactEtcForms';
+        return $rootNamespace . '\ContactEtcForms';
     }
 
     /**
+     * Show output messages to the user.
+     *
      * @param $return
      */
     protected function outputMessages($return)
@@ -77,31 +86,31 @@ class MakeContactEtcForm extends GeneratorCommand
             $path = $this->getPath($name);
             $filename = basename($path);
 
-            $this->info("You can find the file in:");
+            $this->info('You can find the file in:');
             $this->line("/app/ContactEtcForms/$filename");
 
-            $this->warn("Please edit that file as required.");
+            $this->warn('Please edit that file as required.');
 
-            $this->line("--------------------------");
+            $this->line('--------------------------');
             $this->warn(wordwrap(" ** Please update the 'contact_forms' array in your config/contactetc.php and include the full path of the new file. **"));
-            $this->info(("It should be the following: "));
+            $this->info(('It should be the following: '));
 
             $this->line("app_path('ContactEtcForms/$filename')");
 
-            $this->line("--------------------------");
+            $this->line('--------------------------');
 
-            $this->info(wordwrap("(please see https://webdevetc.com/contactetc for the docs that explain how the configs should look)"));
+            $this->info(wordwrap('(please see https://webdevetc.com/contactetc for the docs that explain how the configs should look)'));
 
-            $this->line("--------------------------");
+            $this->line('--------------------------');
 
+            $this->info(wordwrap('If you have more than one contact form, please see the docs on my site (you will also have to add some custom routes.'));
 
-            $this->info(wordwrap("If you have more than one contact form, please see the docs on my site (you will also have to add some custom routes."));
-
-            $this->line("--------------------------");
-            $this->warn("All done! Please scroll up and read the previous messages!");
-            $this->line("Visit https://webdevetc.com/contactetc for docs/more help!");
-            $this->line("BTW - Need to hire a php dev (EU/London based)? contact me https://webdevetc.com/ :)");
-
+            $this->line('--------------------------');
+            $this->warn('All done! Please scroll up and read the previous messages!');
+            $this->line('Visit https://webdevetc.com/contactetc for docs/more help!');
+            $this->line('BTW - Need to hire a php dev (EU/London based)? contact me https://webdevetc.com/ :)');
+        } else {
+            $this->warn('An unknown error occurred');
         }
     }
 }

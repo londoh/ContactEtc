@@ -10,7 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class Checkbox extends BaseFieldType
 {
-
     /**
      * return the blade view that this field type should use
      *
@@ -18,7 +17,7 @@ class Checkbox extends BaseFieldType
      */
     public function getView()
     {
-        return "contactetc::fields.Checkbox";
+        return 'contactetc::fields.Checkbox';
     }
 
     /**

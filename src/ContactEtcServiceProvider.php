@@ -4,8 +4,8 @@ namespace WebDevEtc\ContactEtc;
 
 use Illuminate\Support\ServiceProvider;
 use WebDevEtc\ContactEtc\Commands\MakeContactEtcForm;
-use WebDevEtc\ContactEtc\FieldGenerator\GetContactFormFieldData;
 use WebDevEtc\ContactEtc\FieldGenerator\FieldGeneratorInterface;
+use WebDevEtc\ContactEtc\FieldGenerator\GetContactFormFieldData;
 use WebDevEtc\ContactEtc\Handlers\HandleContactSubmission;
 
 /**
@@ -18,7 +18,7 @@ class ContactEtcServiceProvider extends ServiceProvider
      * The default contact form key.
      * This is used so we can set up the routes for a contact form.
      */
-    const DEFAULT_CONTACT_FORM_KEY = 'main_contact_form';
+    public const DEFAULT_CONTACT_FORM_KEY = 'main_contact_form';
 
     /**
      * Bootstrap services.
@@ -29,9 +29,9 @@ class ContactEtcServiceProvider extends ServiceProvider
     {
         $this->loadRoutes();
         $this->publishesFiles();
-        $this->loadViewsFrom(__DIR__ . "/Views/contactetc", 'contactetc');
+        $this->loadViewsFrom(__DIR__ . '/Views/contactetc', 'contactetc');
         $this->commands([
-            MakeContactEtcForm::class
+            MakeContactEtcForm::class,
         ]);
     }
 
@@ -45,16 +45,15 @@ class ContactEtcServiceProvider extends ServiceProvider
         $this->makeBindings();
     }
 
-
     /**
      * Load the routes (if enabled in config)
      * If you want to have more than the default contact form you must edit your own web.php routes file. See the docs for details.
      */
     protected function loadRoutes()
     {
-        if (config("blogetc.include_default_routes", true)) {
+        if (config('blogetc.include_default_routes', true)) {
             // load default routes
-            include(__DIR__ . "/routes.php");
+            include(__DIR__ . '/routes.php');
         }
     }
 
@@ -80,16 +79,17 @@ class ContactEtcServiceProvider extends ServiceProvider
      */
     protected function makeBindings()
     {
-        $this->app->bind(FieldGeneratorInterface::class, function () {
+        $this->app->bind(FieldGeneratorInterface::class, static function () {
             // this is a bit of a helper really. Not ideal. todo: refactor
             return new GetContactFormFieldData();
         });
-        $this->app->bind(Handlers\HandlerInterface::class, function () {
+
+        $this->app->bind(Handlers\HandlerInterface::class, static function () {
             // the class that takes the input, and does what it needs to (email it!)
             return new HandleContactSubmission();
         });
 
-        $this->app->singleton(ContactFormConfigurator::class, function () {
+        $this->app->singleton(ContactFormConfigurator::class, static function () {
             // the configurator - it holds a collection of all ContactForm's (which have all the details about who to send to, what fields to use, etc)
             return ContactFormConfigurator::createNew();
         });

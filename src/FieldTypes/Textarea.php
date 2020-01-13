@@ -1,5 +1,9 @@
 <?php namespace WebDevEtc\ContactEtc\FieldTypes;
 
+/**
+ * Class Textarea
+ * @package WebDevEtc\ContactEtc\FieldTypes]
+ */
 class Textarea extends Text
 {
     /**
@@ -9,9 +13,8 @@ class Textarea extends Text
      */
     public function getView()
     {
-        return "contactetc::fields.Textarea";
+        return 'contactetc::fields.Textarea';
     }
-
 
     /**
      * Return an array of rules for the validation.
@@ -20,10 +23,6 @@ class Textarea extends Text
      */
     public function rules()
     {
-        return parent::parse_rules([
-            'string',
-        ]);
+        return $this->parse_rules(['string',]);
     }
-
-
 }

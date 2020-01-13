@@ -1,7 +1,10 @@
 <?php namespace WebDevEtc\ContactEtc\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use WebDevEtc\ContactEtc\ContactEtcServiceProvider;
 use WebDevEtc\ContactEtc\ContactForm;
 use WebDevEtc\ContactEtc\Events\ContactFormError;
@@ -27,12 +30,14 @@ class ContactEtcController extends Controller
      * @param string $contact_form_name
      * @return mixed
      */
-    public function form(FieldGeneratorInterface $fieldGenerator, $contact_form_name = ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY)
-    {
+    public function form(
+        FieldGeneratorInterface $fieldGenerator,
+        $contact_form_name = ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY
+    ) {
         $this->getContactForm($fieldGenerator, $contact_form_name);
 
         // 'please fill out the form:'
-        return view("contactetc::form", $this->contactForm->view_params['form_view_vars'])
+        return view('contactetc::form', $this->contactForm->view_params['form_view_vars'])
             ->withFormUrl(route('contactetc.send.' . $contact_form_name))
             ->withContactFormDetails($this->contactForm)
             ->withFields($this->contactForm->fields());
@@ -47,10 +52,15 @@ class ContactEtcController extends Controller
      * @param HandlerInterface $handler
      * @param $contact_form_name
      *
-     * @return \Illuminate\View\View
+     * @return View|RedirectResponse\
      */
-    public function send(ContactEtcSubmittedRequest $request, Mailer $mail, FieldGeneratorInterface $fieldGenerator, HandlerInterface $handler, string $contact_form_name)
-    {
+    public function send(
+        ContactEtcSubmittedRequest $request,
+        Mailer $mail,
+        FieldGeneratorInterface $fieldGenerator,
+        HandlerInterface $handler,
+        string $contact_form_name
+    ) {
 
         $this->getContactForm($fieldGenerator, $contact_form_name);
 
@@ -63,8 +73,7 @@ class ContactEtcController extends Controller
         event(new ContactFormSent($request->all(), $this->contactForm));
 
         // 'thanks, we will get in touch soon!'
-        return view("contactetc::sent", $this->contactForm->view_params['sent_view_vars']);
-
+        return view('contactetc::sent', $this->contactForm->view_params['sent_view_vars']);
     }
 
     /**
@@ -72,7 +81,7 @@ class ContactEtcController extends Controller
      *
      * @param ContactEtcSubmittedRequest $request
      * @param HandlerInterface $handler
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     protected function error(ContactEtcSubmittedRequest $request, HandlerInterface $handler)
     {
@@ -83,10 +92,13 @@ class ContactEtcController extends Controller
 
     /**
      * Get the requested ContactForm and set it as a property  on $this.
+     *
      * @param FieldGeneratorInterface $fieldGenerator
      * @param string $contact_form_name
+     * @return void
+     * @throws Exception
      */
-    protected function getContactForm(FieldGeneratorInterface $fieldGenerator, string $contact_form_name)
+    protected function getContactForm(FieldGeneratorInterface $fieldGenerator, string $contact_form_name): void
     {
         $this->contactForm = $fieldGenerator->contactFormNamed($contact_form_name);
     }

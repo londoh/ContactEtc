@@ -11,7 +11,6 @@ use WebDevEtc\ContactEtc\FieldTypes\RecaptchaV2Invisible;
 use WebDevEtc\ContactEtc\FieldTypes\Text;
 use WebDevEtc\ContactEtc\FieldTypes\Textarea;
 
-
 /* https://webdevetc.com/contactetc configuration
 
 For full docs please go to the URL above. It explains things in a much
@@ -48,7 +47,6 @@ If you want to have more than one contact form please see the docs on https://we
 Feel free to delete this comment once you have read it!
 */
 
-
     // set a alphanum (with underscore) name for this contact form (it must be unique, if you have 2+ contact forms):
     // the  default form should be 'main_contact_form'.
 return ContactForm::newContactForm('main_contact_form')
@@ -59,7 +57,6 @@ return ContactForm::newContactForm('main_contact_form')
     // what is the human readable name of this form
     // This will appear on the emails that it sends you.
     ->humanReadableFormName("Main Contact Form")
-
 
     // Now add some fields!
     // Please see my docs page for more details
@@ -123,7 +120,6 @@ return ContactForm::newContactForm('main_contact_form')
 //                            ->setLabelName("Agree to our terms?")
 //                            ->markAsRequiredField(),
 
-
             // Do you want to use the invisible recaptcha from Google?
             // If so, please make sure that you have CAPTCHA_SITEKEY and CAPTCHA_SECRET set up in your .env (or in config/captcha.php)
             // and uncomment the next line
@@ -132,13 +128,9 @@ return ContactForm::newContactForm('main_contact_form')
 //                       ->setLabelName("Spam protection"), // probably not needed, as it should be invisible!
 
         ]
-
-
     )
 
-
     // the rest of the options are optional :)
-
 
     // If you need to send data to the view, set it here.
     // Maybe your main layout blade file has <title>{{$title}}</title> <meta name=desc content={{$meta_desc}}
@@ -165,8 +157,3 @@ return ContactForm::newContactForm('main_contact_form')
     // by default it will look something like <input type='submit' value='Send!' class='btn btn-primary'>
     ->setSubmitButtonTextAndClasses("Send!", "btn btn-primary")
    ;
-
-
-
-
-

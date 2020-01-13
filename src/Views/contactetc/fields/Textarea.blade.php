@@ -1,5 +1,5 @@
 <div class="form-group textarea_field">
-    <label for="{{$field->field_name}}">{{$field->label}}</label>
+    <label for="{{$field->field_name}}">{{ $field->label }}</label>
 
     <textarea
             name='{{$field->field_name}}'
@@ -7,18 +7,14 @@
             id="{{$field->field_name}}"
             aria-describedby="{{$field->field_name}}Helper"
             rows='7'
-
-
             {{ $field->requiredTagAttribute() }}
             {!! $field->placeholderTagAttribute() !!}
-
-
-    >{{old($field->field_name,$field->default)}}</textarea>
-    @include("contactetc::shared.error",['field'=>$field])
+    >{{ old($field->field_name,$field->default) }}</textarea>
+    @include('contactetc::shared.error',['field'=>$field])
 
     @if($field->description)
-        <small id="{{$field->field_name}}Helper"
-               class="form-text text-muted contactetc_desc">{{$field->description}}</small>
+        <small id="{{ $field->field_name }}Helper"
+               class="form-text text-muted contactetc_desc">{{ $field->description }}</small>
     @endif
 
 </div>

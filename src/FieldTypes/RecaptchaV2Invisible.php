@@ -6,7 +6,6 @@
  */
 class RecaptchaV2Invisible extends BaseFieldType
 {
-
     /**
      * @var bool
      */
@@ -19,7 +18,7 @@ class RecaptchaV2Invisible extends BaseFieldType
      */
     public function getView()
     {
-        return "contactetc::fields.RecaptchaV2Invisible";
+        return 'contactetc::fields.RecaptchaV2Invisible';
     }
 
     /**
@@ -41,7 +40,7 @@ class RecaptchaV2Invisible extends BaseFieldType
      */
     public static function spam()
     {
-        return self::newNamed("g-recaptcha-response");
+        return self::newNamed('g-recaptcha-response');
     }
 
     /**
@@ -55,7 +54,7 @@ class RecaptchaV2Invisible extends BaseFieldType
         // no need to pass it to parent::parse_rules()
         return [
             'required',
-            'captcha'
+            'captcha',
         ];
     }
 

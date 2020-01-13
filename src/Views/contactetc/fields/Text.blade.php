@@ -1,24 +1,21 @@
 <div class="form-group text_field">
-    <label for="{{$field->field_name}}">{{$field->label}}</label>
-
-
+    <label for="{{ $field->field_name }}">{{ $field->label }}</label>
     <input
             type="{{ $input_type ?? 'text' }}"
-            name='{{$field->field_name}}'
+            name='{{ $field->field_name }}'
             class="form-control"
-            id="{{$field->field_name}}"
-
+            id="{{ $field->field_name }}"
             {{ $field->requiredTagAttribute() }}
             {!! $field->placeholderTagAttribute() !!}
             {!! $field->valueTagAttribute() !!}
             aria-describedby="{{$field->field_name}}Helper"
     >
 
-    @include("contactetc::shared.error",['field'=>$field])
+    @include('contactetc::shared.error',['field'=>$field])
 
     @if($field->description)
-        <small id="{{$field->field_name}}Helper"
-               class="form-text text-muted contactetc_desc">{{$field->description}}</small>
+        <small id="{{ $field->field_name }}Helper"
+               class="form-text text-muted contactetc_desc">{{ $field->description }}</small>
     @endif
 
 </div>

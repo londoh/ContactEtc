@@ -25,6 +25,7 @@ abstract class BaseFieldType implements BaseFieldInterface
      * @var bool|int
      */
     protected $min = false;
+
     /**
      * Max length (for validation).
      *
@@ -106,8 +107,15 @@ abstract class BaseFieldType implements BaseFieldInterface
      * @param $placeholder
      * @param array $custom_attributes
      */
-    public function __construct($field_name, $title = null, $description = null, $default = null, $required = false, $placeholder = null, array $custom_attributes = [])
-    {
+    public function __construct(
+        $field_name,
+        $title = null,
+        $description = null,
+        $default = null,
+        $required = false,
+        $placeholder = null,
+        array $custom_attributes = []
+    ) {
         $this->setFieldName($field_name);
 
         $this->label = $title ? $title : str_slug($this->field_name);
@@ -139,7 +147,7 @@ abstract class BaseFieldType implements BaseFieldInterface
     public function requiredTagAttribute()
     {
         // if $this->required, then return 'required' so it can be placed in the <input>
-        return $this->required ? " required " : "";
+        return $this->required ? ' required ' : '';
     }
 
     /**
@@ -155,7 +163,6 @@ abstract class BaseFieldType implements BaseFieldInterface
         return $field;
     }
 
-
     /**
      *  Set the field name.
      *
@@ -167,7 +174,6 @@ abstract class BaseFieldType implements BaseFieldInterface
         $this->field_name = $field_name;
         return $this;
     }
-
 
     /**
      * Set the label property.
@@ -300,7 +306,6 @@ abstract class BaseFieldType implements BaseFieldInterface
         return $this->min;
     }
 
-
     /**
      * generate the rule for either required or optional (nullable)
      *
@@ -320,21 +325,18 @@ abstract class BaseFieldType implements BaseFieldInterface
     public function parse_rules(array $rules)
     {
 
-
         if ($this->getMin()) {
-            $rules[] = "min:" . $this->getMin();
+            $rules[] = 'min:' . $this->getMin();
         }
 
         if ($this->getMax()) {
-            $rules[] = "max:" . $this->getMax();
+            $rules[] = 'max:' . $this->getMax();
         }
 
         $rules[] = $this->isRequiredOrNullable();
 
         return $rules;
-
     }
-
 
     /**
      * Used if any processing is needed (such as converting from submitted <select> keys to their values)
@@ -345,6 +347,5 @@ abstract class BaseFieldType implements BaseFieldInterface
     {
         return nl2br(e(trim($submitted_data)));
     }
-
 
 }

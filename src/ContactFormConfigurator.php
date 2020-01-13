@@ -1,5 +1,7 @@
 <?php namespace WebDevEtc\ContactEtc;
 
+use Exception;
+use Illuminate\Config\Repository;
 
 /**
  * Class ContactEtcFieldConfigurator
@@ -27,7 +29,7 @@ class ContactFormConfigurator
      *
      * @param bool $load_configs
      * @return ContactFormConfigurator
-     * @throws \Exception
+     * @throws Exception
      */
     public static function createNew($load_configs=false)
     {
@@ -53,6 +55,7 @@ class ContactFormConfigurator
      *
      * @param ContactForm $contactForm
      * @return $this
+     * @throws Exception
      */
     public function addContactForm(ContactForm $contactForm)
     {
@@ -66,13 +69,13 @@ class ContactFormConfigurator
      * php artisan vendor:publish
      *
      * @param $load_configs
-     * @return array|\Illuminate\Config\Repository|mixed
-     * @throws \Exception
+     * @return array|Repository|mixed
+     * @throws Exception
      */
     protected static function getArrayOfConfigFilepaths($load_configs=false)
     {
         // default is to use config('contactetc.contact_forms'). But you can pass an array to $load_configs
-        $configs = $load_configs && is_array($load_configs) ? $load_configs : config("contactetc.contact_forms");
+        $configs = $load_configs && is_array($load_configs) ? $load_configs : config('contactetc.contact_forms');
         self::checkConfigIsValidArray($configs);
         return $configs;
     }
@@ -80,12 +83,12 @@ class ContactFormConfigurator
     /**
      * throws an exception if the config file doesn't exist
      * @param $contact_form_filepath
-     * @throws \Exception
+     * @throws Exception
      */
     protected static function checkConfigFileExists(string $contact_form_filepath)
     {
         if (!file_exists($contact_form_filepath)) {
-            throw new \Exception("ContactEtc: The contact form config file (defined in config/contactetc.php) does not exist. Please create it with `php artisan make:contactetcform MainContactForm`, then update that file with your contact form details. Could not find file: $contact_form_filepath");
+            throw new Exception("ContactEtc: The contact form config file (defined in config/contactetc.php) does not exist. Please create it with `php artisan make:contactetcform MainContactForm`, then update that file with your contact form details. Could not find file: $contact_form_filepath");
         }
     }
 
@@ -94,12 +97,12 @@ class ContactFormConfigurator
      * Throw exception if not!
      *
      * @param $configs
-     * @throws \Exception
+     * @throws Exception
      */
     protected static function checkConfigIsValidArray($configs)
     {
         if (!is_array($configs) || !count($configs)) {
-            throw new \Exception("The could not load config('contactetc.contact_forms'). Does config/contactetc.php file exist? Does it have the correct array items? See https://webdevetc.com/contactetc for docs. You probably have to run the `php artisan vendor:publish --tag=contactetc` command...");
+            throw new Exception("The could not load config('contactetc.contact_forms'). Does config/contactetc.php file exist? Does it have the correct array items? See https://webdevetc.com/contactetc for docs. You probably have to run the `php artisan vendor:publish --tag=contactetc` command...");
         }
     }
 
@@ -119,12 +122,12 @@ class ContactFormConfigurator
      *
      * @param string $contact_form_name
      * @return ContactForm
-     * @throws \Exception
+     * @throws Exception
      */
     public function getContactForm(string $contact_form_name)
     {
         if (!isset($this->contact_forms[$contact_form_name])) {
-            throw new \Exception("Contact form $contact_form_name does not exist in the configurator");
+            throw new Exception("Contact form $contact_form_name does not exist in the configurator");
         }
         return $this->contact_forms[$contact_form_name];
     }

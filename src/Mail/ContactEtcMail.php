@@ -94,15 +94,11 @@ class ContactEtcMail extends Mailable
                 }
             }
 
-            if (method_exists($field, "isReplyToName")) {
-                if ($field->isReplyToName()) {
-                    $reply_to_name = $this->submitted_data[$field->field_name];
-                }
+            if (method_exists($field, 'isReplyToName') && $field->isReplyToName()) {
+                $reply_to_name = $this->submitted_data[$field->field_name];
             }
-            if (method_exists($field, "isFromName")) {
-                if ($field->isFromName()) {
-                    $from_name = $this->submitted_data[$field->field_name];
-                }
+            if (method_exists($field, 'isFromName') && $field->isFromName()) {
+                $from_name = $this->submitted_data[$field->field_name];
             }
         }
 

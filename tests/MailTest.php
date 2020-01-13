@@ -1,16 +1,15 @@
 <?php
 
+use Tests\TestCase;
 use WebDevEtc\ContactEtc\ContactFormConfigurator;
-use WebDevEtc\ContactEtc\ContactEtcServiceProvider;
-use WebDevEtc\ContactEtc\ContactForm;
 use WebDevEtc\ContactEtc\FieldGenerator\GetContactFormFieldData;
-use WebDevEtc\ContactEtc\FieldTypes\Email;
-use WebDevEtc\ContactEtc\FieldTypes\Textarea;
+use WebDevEtc\ContactEtc\Mail\ContactEtcMail;
 
-class MailTest extends \Tests\TestCase
+/**
+ * Class MailTest
+ */
+class MailTest extends TestCase
 {
-
-
     /** Setup the config for contact forms with test data */
     public function setUp()
     {
@@ -20,14 +19,13 @@ class MailTest extends \Tests\TestCase
             // this stops errors being thrown that are not relevant to any testing
             return ContactFormConfigurator::createNew([
                 __DIR__ . "/TestConfigs/main_contact_form_config.php",
-                __DIR__ . "/TestConfigs/alt.php"
+                __DIR__ . "/TestConfigs/alt.php",
             ]);
         });
     }
 
     public function test_contact_etc_mail()
     {
-
 
         $field_generator = new GetContactFormFieldData();
         $form = $field_generator->contactFormNamed('alt');
@@ -36,21 +34,17 @@ class MailTest extends \Tests\TestCase
             "email" => "someemail@email.com",
             "message" => "Hello world message here",
         ];
-        $mail = new \WebDevEtc\ContactEtc\Mail\ContactEtcMail($submitted, $form);
+        $mail = new ContactEtcMail($submitted, $form);
         $this->assertArrayHasKey('your_name', $mail->submitted_data);
         $build_resp = $mail->build();
 
         // let's just double check the right type got returned.
-        $this->assertTrue(get_class($build_resp) == \WebDevEtc\ContactEtc\Mail\ContactEtcMail::class);
-
+        $this->assertTrue(get_class($build_resp) == ContactEtcMail::class);
 
         // check that the mail has its ReplyTo name/email set:
         $this->assertTrue(count($mail->replyTo) == 1 && $mail->replyTo[0]['name'] == $submitted['your_name'] && $mail->replyTo[0]['address'] == $submitted['email']);
 
         // check the mail has its From name/email set:
         $this->assertTrue(count($mail->from) == 1 && $mail->from[0]['name'] == $submitted['your_name'] && $mail->from[0]['address'] == $submitted['email']);
-
-
     }
-
 }

@@ -1,17 +1,12 @@
 <?php
 
-use WebDevEtc\ContactEtc\ContactFormConfigurator;
+use Tests\TestCase;
 use WebDevEtc\ContactEtc\ContactEtcServiceProvider;
-use WebDevEtc\ContactEtc\ContactForm;
-use WebDevEtc\ContactEtc\FieldGenerator\GetContactFormFieldData;
-use WebDevEtc\ContactEtc\FieldTypes\Email;
-use WebDevEtc\ContactEtc\FieldTypes\Textarea;
-use WebDevEtc\ContactEtc\FieldTypes\Text;
+use WebDevEtc\ContactEtc\ContactFormConfigurator;
+use WebDevEtc\ContactEtc\Requests\ContactEtcSubmittedRequest;
 
-class RulesTest extends \Tests\TestCase
+class RulesTest extends TestCase
 {
-
-
     /** Setup the contact form config */
     public function setUp()
     {
@@ -20,7 +15,7 @@ class RulesTest extends \Tests\TestCase
             // send a custom array of what config files we want to (by default) include
             // this stops errors being thrown that are not relevant to any testing
             return ContactFormConfigurator::createNew([
-                __DIR__ . "/TestConfigs/main_contact_form_config.php"
+                __DIR__ . "/TestConfigs/main_contact_form_config.php",
             ]);
         });
     }
@@ -28,7 +23,7 @@ class RulesTest extends \Tests\TestCase
     /** Make some basic tests that the ContactEtcSubmittedRequest request returns some rules */
     public function test_basic_rules()
     {
-        $request = new \WebDevEtc\ContactEtc\Requests\ContactEtcSubmittedRequest();
+        $request = new ContactEtcSubmittedRequest();
         $request->contactFormId = ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY;
         $resp = $request->rules(app()->make(ContactFormConfigurator::class));
 
@@ -36,7 +31,6 @@ class RulesTest extends \Tests\TestCase
 
         // while we are here, quickly test this:
         $this->assertTrue($request->authorize());
-
     }
 
 }

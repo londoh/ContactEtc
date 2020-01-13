@@ -3,7 +3,9 @@ namespace WebDevEtc\ContactEtc\Tests;
 
 use App\Http\Middleware\VerifyCsrfToken;
 use Config;
+use Illuminate\Foundation\Testing\TestResponse;
 use Mail;
+use Tests\TestCase;
 use WebDevEtc\ContactEtc\ContactFormConfigurator;
 use WebDevEtc\ContactEtc\ContactEtcServiceProvider;
 use WebDevEtc\ContactEtc\ContactForm;
@@ -13,7 +15,7 @@ use WebDevEtc\ContactEtc\FieldTypes\Textarea;
 use WebDevEtc\ContactEtc\Mail\ContactEtcMail;
 
 
-class CommentFeatureTest extends \Tests\TestCase
+class CommentFeatureTest extends TestCase
 {
     /** Setup the config for test contact form pages. */
     public function setUp()
@@ -60,7 +62,7 @@ class CommentFeatureTest extends \Tests\TestCase
     {
 
         // we don't really need to send any emails
-        \Mail::fake();
+        Mail::fake();
 
 
         /** @var ContactFormConfigurator $config */
@@ -84,12 +86,12 @@ class CommentFeatureTest extends \Tests\TestCase
             "testmessage" => "testmessage",
         ];
 
-        /** @var \Illuminate\Foundation\Testing\TestResponse $resp */
+        /** @var TestResponse $resp */
         $resp = $this->post(route("contactetc.form." . ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY), $data);
 
         $this->assertTrue($resp->isOk());
 
-        \Mail::assertSent(ContactEtcMail::class);
+        Mail::assertSent(ContactEtcMail::class);
 
 
         $data = [
@@ -98,7 +100,7 @@ class CommentFeatureTest extends \Tests\TestCase
             "testmessage" => "testmessage",
         ];
 
-        /** @var \Illuminate\Foundation\Testing\TestResponse $resp */
+        /** @var TestResponse $resp */
         $resp = $this->post(route("contactetc.form." . ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY), $data);
         $this->assertTrue(!$resp->isOk());
         $resp->assertSessionHasErrors();
@@ -109,7 +111,7 @@ class CommentFeatureTest extends \Tests\TestCase
             "testmessage" => "testmessage",
         ];
 
-        /** @var \Illuminate\Foundation\Testing\TestResponse $resp */
+        /** @var TestResponse $resp */
         $resp = $this->post(route("contactetc.form." . ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY), $data);
         $this->assertTrue(!$resp->isOk());
         $resp->assertSessionHasErrors();
@@ -120,7 +122,7 @@ class CommentFeatureTest extends \Tests\TestCase
             "testmessage" => "",
         ];
 
-        /** @var \Illuminate\Foundation\Testing\TestResponse $resp */
+        /** @var TestResponse $resp */
         $resp = $this->post(route("contactetc.form." . ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY), $data);
         $this->assertTrue(!$resp->isOk());
         $resp->assertSessionHasErrors();
@@ -132,7 +134,7 @@ class CommentFeatureTest extends \Tests\TestCase
             "testmessage" => "testmessage",
         ];
 
-        /** @var \Illuminate\Foundation\Testing\TestResponse $resp */
+        /** @var TestResponse $resp */
         $resp = $this->post(route("contactetc.form." . ContactEtcServiceProvider::DEFAULT_CONTACT_FORM_KEY), $data);
         $this->assertTrue(!$resp->isOk());
 

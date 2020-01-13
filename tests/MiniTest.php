@@ -1,17 +1,17 @@
 <?php
+
 namespace WebDevEtc\ContactEtc\Tests;
 
+use Tests\TestCase;
 use WebDevEtc\ContactEtc\ContactEtcServiceProvider;
-use WebDevEtc\ContactEtc\FieldTypes\BaseFieldType;
 use WebDevEtc\ContactEtc\FieldTypes\Checkbox;
 use WebDevEtc\ContactEtc\FieldTypes\Email;
 use WebDevEtc\ContactEtc\FieldTypes\RecaptchaV2Invisible;
 use WebDevEtc\ContactEtc\FieldTypes\Text;
 use WebDevEtc\ContactEtc\FieldTypes\Textarea;
 
-
 /** Some misc tests that don't belong elsewhere */
-class MiniTest extends \Tests\TestCase
+class MiniTest extends TestCase
 {
 
     /** this is a simple test to check that the const DEFAULT_FORM_PAGE_ID is still set to main_contact_form.
@@ -25,22 +25,22 @@ class MiniTest extends \Tests\TestCase
     public function test_field_types_seem_ok()
     {
         // fieldTypeObject test to ensure that none of the field types have any obvious errors
-        foreach(
+        foreach (
             [
                 Checkbox::class,
                 Email::class,
                 RecaptchaV2Invisible::class,
                 Textarea::class,
-                Text::class
+                Text::class,
             ] as $fieldType) {
 
-            $fieldTypeObject = new $fieldType("something","Something");
+            $fieldTypeObject = new $fieldType("something", "Something");
             $view = $fieldTypeObject->getView();
 
             $this->assertTrue(is_string($view), $fieldType . " view was not string");
 
             // render fieldTypeObject view, this test will fail if the view produces an error
-            $rendered = view($view, ['field'=>$fieldTypeObject,'errors'=>optional(null)])->render();
+            $rendered = view($view, ['field' => $fieldTypeObject, 'errors' => optional(null)])->render();
             $this->assertTrue(is_string($rendered) && strlen($rendered));
         }
     }

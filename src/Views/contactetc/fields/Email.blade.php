@@ -1,3 +1,3 @@
-@include("contactetc::fields.Text",['field'=>$field,'input_type'=>"email"])
+@include('contactetc::fields.Text', ['field'=>$field, 'input_type'=>'email'])
 
 

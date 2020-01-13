@@ -1,4 +1,5 @@
 <?php namespace WebDevEtc\ContactEtc\FieldTypes;
+
 use Illuminate\Validation\Rule;
 
 /**
@@ -7,18 +8,18 @@ use Illuminate\Validation\Rule;
  */
 class Select extends BaseFieldType
 {
-    protected $options=[];
+    protected $options = [];
 
     /**
      * If true, this is a source for the 'reply to' name
      * @var bool
      */
-    protected $is_reply_to_name=false;
+    protected $is_reply_to_name = false;
     /**
      * If true, this is a source for the 'from' name
      * @var bool
      */
-    protected $is_from_name=false;
+    protected $is_from_name = false;
 
     /**
      * What blade view file should this field use on the contact form?
@@ -27,9 +28,8 @@ class Select extends BaseFieldType
      */
     public function getView()
     {
-        return "contactetc::fields.Select";
+        return 'contactetc::fields.Select';
     }
-
 
     /**
      * Return an array of rules for the validation.
@@ -38,9 +38,7 @@ class Select extends BaseFieldType
      */
     public function rules()
     {
-        return parent::parse_rules([
-            Rule::in(array_keys($this->options))
-        ]);
+        return $this->parse_rules([Rule::in(array_keys($this->options)),]);
     }
 
     public function getOptions()

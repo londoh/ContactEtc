@@ -1,5 +1,6 @@
 <?php namespace WebDevEtc\ContactEtc;
 
+use Exception;
 use WebDevEtc\ContactEtc\FieldTypes\BaseFieldType;
 
 /**
@@ -7,7 +8,6 @@ use WebDevEtc\ContactEtc\FieldTypes\BaseFieldType;
  *
  * @package WebDevEtc\ContactEtc
  */
-
 class ContactForm
 {
 
@@ -18,17 +18,20 @@ class ContactForm
      * @var
      */
     public $contact_form_name;
+
     /**
      * A nice, human readable name
      * Used in places such as in the default email message ("A contact form response from: $human_readable_form_name")
      * @var string
      */
     public $human_readable_form_name = 'Contact Form';
+
     /**
      * What email should this contact form send to? (i.e. your email address)
      * @var
      */
     public $send_to;
+
     /**
      * What variables should we pass to the views?
      *
@@ -40,8 +43,9 @@ class ContactForm
      */
     public $view_params = [
         'form_view_vars' => [],
-        'sent_view_vars' => []
+        'sent_view_vars' => [],
     ];
+
     /**
      * What HTML to use above the contact form?
      * Anything you put here is not escaped.
@@ -49,18 +53,21 @@ class ContactForm
      * @var string
      */
     public $html_above_form = '';
+
     /**
      * What HTML to use below the contact form.
      * @see $html_above_form
      * @var string
      */
     public $html_below_form = '';
+
     /**
      * What should the send button value be?
      * ie <input type='submit' value='$this->submit_button_text' >
      * @var string
      */
     public $submit_button_text = 'Send!';
+
     /**
      * What css class should the submit button use?
      *
@@ -78,7 +85,6 @@ class ContactForm
      */
     protected $fields = [];
 
-
     /**
      * Do not allow direct (new ContactForm).
      * (private)
@@ -95,19 +101,18 @@ class ContactForm
      *
      * @param string $contact_form_name
      * @return ContactForm
-     * @throws \Exception
+     * @throws Exception
      */
     public static function newContactForm(string $contact_form_name)
     {
-        if (str_slug($contact_form_name, "_") !== $contact_form_name) {
-            throw new \Exception("Invalid \$contact_form_name ($contact_form_name) - it should be alpha numeric, with underscores (A-Z0-9_)");
+        if (str_slug($contact_form_name, '_') !== $contact_form_name) {
+            throw new Exception("Invalid \$contact_form_name ($contact_form_name) - it should be alpha numeric, with underscores (A-Z0-9_)");
         }
 
         $form = new self;
         $form->contact_form_name = $contact_form_name;
         return $form;
     }
-
 
     /**
      * This is a simple check that the bare minimum data is provided for this contact form to work.
@@ -120,7 +125,7 @@ class ContactForm
      * Also, it could use the same validation methods as the main laravel validation.
      *
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function validate()
     {
@@ -138,15 +143,12 @@ class ContactForm
 
         // all is good, return this!
         return $this;
-
     }
-
 
     protected function checkValidationRule($rule)
     {
 
     }
-
 
     /**
      * Add an array of fields.
@@ -158,7 +160,7 @@ class ContactForm
      */
     public function addFields(array $fields)
     {
-        array_map([$this,'addField'], $fields);
+        array_map([$this, 'addField'], $fields);
         return $this;
     }
 
@@ -240,9 +242,9 @@ class ContactForm
         // optional, but you might want to pass some variables on the contact form. You can replace this with an empty array -
         $this->view_params = [
             'form_view_vars' => $form_view_vars,
-            'sent_view_vars' => $sent_view_vars];
+            'sent_view_vars' => $sent_view_vars,
+        ];
         return $this;
-
     }
 
     /**
@@ -272,30 +274,28 @@ class ContactForm
     /**
      * @param $validateAgainst
      * @param $fieldName
-     * @throws \Exception
+     * @throws Exception
      */
     protected function checkValidationForField($validateAgainst, $fieldName)
     {
         foreach ($validateAgainst as $rule) {
             switch ($rule) {
-                case "required":
+                case 'required':
                     if (!trim($this->$fieldName)) {
-                        throw new \Exception("\$this->$fieldName must be set, but is not set");
+                        throw new Exception("\$this->$fieldName must be set, but is not set");
                     }
                     break;
                 case 'string':
                     if (!is_string($this->$fieldName)) {
-                        throw new \Exception("\$this->$fieldName must be a string, but it is not");
+                        throw new Exception("\$this->$fieldName must be a string, but it is not");
                     }
                     break;
                 case 'email':
                     if (!filter_var($this->$fieldName, FILTER_VALIDATE_EMAIL)) {
-                        throw new \Exception("\$this->$fieldName must be an email address, but it is not");
+                        throw new Exception("\$this->$fieldName must be an email address, but it is not");
                     }
                     break;
-            };
+            }
         }
     }
-
-
 }

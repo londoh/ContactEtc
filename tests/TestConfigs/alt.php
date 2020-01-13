@@ -5,17 +5,12 @@
  * Only to be used for TESTING
  */
 
-
 namespace App\ContactEtcForms;
 
-use WebDevEtc\ContactEtc\ContactFormConfigurator;
 use WebDevEtc\ContactEtc\ContactForm;
-use WebDevEtc\ContactEtc\FieldTypes\Checkbox;
 use WebDevEtc\ContactEtc\FieldTypes\Email;
-use WebDevEtc\ContactEtc\FieldTypes\RecaptchaV2Invisible;
 use WebDevEtc\ContactEtc\FieldTypes\Text;
 use WebDevEtc\ContactEtc\FieldTypes\Textarea;
-
 
 ###################################################################
 ###                                                             ###
@@ -24,8 +19,6 @@ use WebDevEtc\ContactEtc\FieldTypes\Textarea;
 ###     add a custom route to your web.php file                 ###
 ###                                                             ###
 ###################################################################
-
-
 
 return ContactForm::newContactForm("alt")
     ->sendTo("UPDATE_THIS_TO_SOMETHING@example.com")// what email address shall we send the contact form response to? (i.e. your email address)
@@ -41,7 +34,8 @@ return ContactForm::newContactForm("alt")
         'meta_desc' => "Get in touch with us!",
     ])
     ->setHtmlAboveAndBelowForm(
-        '<div style="text-align:center;"><h3>Contact us</h3><p>Please use the contact form below to get in touch! </p></div>', '')
+        '<div style="text-align:center;"><h3>Contact us</h3><p>Please use the contact form below to get in touch! </p></div>',
+        '')
     ->setSubmitButtonTextAndClasses("Send!", "btn btn-primary")
     ->addFields(
 
@@ -58,9 +52,8 @@ return ContactForm::newContactForm("alt")
                 ->markAsRequiredField()
                 ->max(200)// max length
                 ->min(4)// min length
-                        ->setAsFromAddress()
+                ->setAsFromAddress()
                 ->setAsReplyToAddress(),
-
 
             Text::newNamed("your_location")// field name
             ->setLabelName("Location")
@@ -82,7 +75,6 @@ return ContactForm::newContactForm("alt")
 //                    RecaptchaV2Invisible::spam("g-recaptcha-response")->setLabelName("Spam protection"),
 
         ]
-
 
     );
 

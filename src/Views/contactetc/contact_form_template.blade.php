@@ -10,7 +10,7 @@ __________
 
 # {{$field->label}} <small style='color: #bbb'>{{$field->field_name}}</small>
 
-> {!! $field->forEmailOutput(@$submitted_data[$field->field_name]) ?? "[no submitted data]"  !!}
+> {!! $field->forEmailOutput(@$submitted_data[$field->field_name]) ?? '[no submitted data]'  !!}
 
 @endforeach
 

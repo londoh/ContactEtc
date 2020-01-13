@@ -2,7 +2,12 @@
 
 namespace WebDevEtc\ContactEtc\Exceptions;
 
-class InvalidContactSubmission extends \Exception
-{
+use RuntimeException;
 
+/**
+ * Class InvalidContactSubmission
+ * @package WebDevEtc\ContactEtc\Exceptions
+ */
+class InvalidContactSubmission extends RuntimeException
+{
 }

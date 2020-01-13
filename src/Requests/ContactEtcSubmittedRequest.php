@@ -2,6 +2,7 @@
 
 namespace WebDevEtc\ContactEtc\Requests;
 
+use Exception;
 use Illuminate\Foundation\Http\FormRequest;
 use WebDevEtc\ContactEtc\ContactFormConfigurator;
 use WebDevEtc\ContactEtc\FieldTypes\BaseFieldInterface;
@@ -13,7 +14,6 @@ use WebDevEtc\ContactEtc\FieldTypes\BaseFieldType;
  */
 class ContactEtcSubmittedRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      * A contact form would be a bit useless if guests could not contact you
@@ -34,7 +34,7 @@ class ContactEtcSubmittedRequest extends FormRequest
      *
      * @param ContactFormConfigurator $contactFormConfigurator
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function rules(ContactFormConfigurator $contactFormConfigurator)
     {
