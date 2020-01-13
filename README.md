@@ -1,3 +1,5 @@
+* Not maintained any longer. This is a few years old now.
+
 # WebDevEtc ContactEtc - A full contact form for your Laravel Project, including everything you need to install and get a contact form up and working almost instantly
 
 ## Fully customisable - lots of options to suit your needs.
